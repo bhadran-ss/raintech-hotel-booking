@@ -26,6 +26,11 @@ A small React application for selecting a hotel room, choosing check-in and chec
 
 I chose React with Vite because it provides a simple development environment while keeping the UI components and booking logic clearly separated.
 
+## Prerequisites
+
+- Node.js `^20.19.0` or `>=22.12.0`
+- npm
+
 ## Installation
 
 Clone the repository and install its dependencies:
