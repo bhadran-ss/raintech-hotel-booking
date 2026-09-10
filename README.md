@@ -1,16 +1,72 @@
-# React + Vite
+# Raintech Hotel Booking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React application for selecting a hotel room, choosing check-in and check-out dates, and calculating the total stay price.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Displays five rooms using hardcoded JSON data
+- Allows the user to select one room
+- Accepts check-in and check-out dates
+- Calculates the number of nights
+- Calculates the total using the selected room's nightly rate
+- Prevents check-in dates in the past
+- Rejects same-day and reversed date ranges
+- Validates the selected room's guest capacity
+- Displays clear validation messages
+- Creates an in-memory booking confirmation
+- Includes unit tests for date, price, guest and validation rules
 
-## React Compiler
+## Technology
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- JavaScript
+- CSS
+- Vitest
 
-## Expanding the ESLint configuration
+I chose React with Vite because it provides a simple development environment while keeping the UI components and booking logic clearly separated.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Installation
+
+Clone the repository and install its dependencies:
+
+```bash
+npm install
+```
+
+## Run the application
+
+```bash
+npm run dev
+```
+
+Open the local address displayed in the terminal.
+
+## Run the tests
+
+```bash
+npm test
+```
+
+## Create a production build
+
+```bash
+npm run build
+```
+
+## Technical decisions
+
+Room information is stored as hardcoded JSON because the exercise does not require an API or database.
+
+Date, validation and price calculations are implemented as separate utility functions instead of being placed directly inside the React components.
+
+Date calculations use calendar dates at UTC midnight to prevent time-zone or daylight-saving changes from affecting the number of nights.
+
+The booking confirmation is stored only in React state. It is not persisted because booking persistence is outside the scope of the exercise.
+
+## Improvements with more time
+
+- Prevent selection of rooms with overlapping existing bookings
+- Filter the room list by maximum guest capacity
+- Connect the application to a real room-availability API
+- Improve accessibility testing
