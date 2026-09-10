@@ -21,7 +21,9 @@ export function calculateTotalPrice(numberOfNights, pricePerNight) {
 export function validateBooking({
   checkIn,
   checkOut,
+  guestCount,
   selectedRoomCode,
+  maximumGuests,
   today = getTodayDateString(),
 }) {
   const errors = {};
@@ -54,6 +56,12 @@ export function validateBooking({
 
   if (!selectedRoomCode) {
     errors.room = "Select a room before booking.";
+  }
+
+  if (!Number.isInteger(guestCount) || guestCount < 1) {
+    errors.guestCount = "Enter a valid number of guests.";
+  } else if (Number.isInteger(maximumGuests) && guestCount > maximumGuests) {
+    errors.guestCount = `This room allows a maximum of ${maximumGuests} guests.`;
   }
 
   return {

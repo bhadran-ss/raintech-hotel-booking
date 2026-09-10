@@ -1,6 +1,6 @@
 import RoomCard from "./RoomCard";
 
-function RoomList({ rooms }) {
+function RoomList({ rooms, selectedRoomCode, onRoomSelect }) {
   return (
     <section className="panel">
       <div className="panel__heading room-list-heading">
@@ -18,9 +18,14 @@ function RoomList({ rooms }) {
         </span>
       </div>
 
-      <div className="room-list">
+      <div className="room-list" role="radiogroup" aria-label="Hotel rooms">
         {rooms.map((room) => (
-          <RoomCard key={room.code} room={room} />
+          <RoomCard
+            key={room.code}
+            room={room}
+            isSelected={selectedRoomCode === room.code}
+            onSelect={onRoomSelect}
+          />
         ))}
       </div>
     </section>

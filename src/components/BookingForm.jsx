@@ -1,4 +1,14 @@
-function BookingForm() {
+function BookingForm({
+  checkIn,
+  checkOut,
+  guestCount,
+  minimumCheckIn,
+  onCheckInChange,
+  onCheckOutChange,
+  onGuestCountChange,
+  onSubmit,
+  canSubmit,
+}) {
   return (
     <section className="panel">
       <div className="panel__heading">
@@ -10,21 +20,38 @@ function BookingForm() {
         </div>
       </div>
 
-      <form className="booking-form">
+      <form className="booking-form" onSubmit={onSubmit} noValidate>
         <label className="form-field">
           <span>Check-in date</span>
-          <input type="date" name="checkIn" />
+          <input
+            type="date"
+            name="checkIn"
+            value={checkIn}
+            min={minimumCheckIn}
+            onChange={(event) => onCheckInChange(event.target.value)}
+          />{" "}
         </label>
 
         <label className="form-field">
           <span>Check-out date</span>
-          <input type="date" name="checkOut" />
+
+          <input
+            type="date"
+            name="checkOut"
+            value={checkOut}
+            min={checkIn || minimumCheckIn}
+            onChange={(event) => onCheckOutChange(event.target.value)}
+          />
         </label>
 
         <label className="form-field">
           <span>Number of guests</span>
 
-          <select name="guestCount" defaultValue="1">
+          <select
+            name="guestCount"
+            value={guestCount}
+            onChange={(event) => onGuestCountChange(Number(event.target.value))}
+          >
             <option value="1">1 guest</option>
             <option value="2">2 guests</option>
             <option value="3">3 guests</option>
@@ -32,14 +59,10 @@ function BookingForm() {
           </select>
         </label>
 
-        <button className="primary-button" type="button" disabled>
-          Review booking
+        <button className="primary-button" type="submit" disabled={!canSubmit}>
+          Confirm booking
         </button>
       </form>
-
-      <p className="form-note">
-        Booking calculations and validation will be added in the next phase.
-      </p>
     </section>
   );
 }
