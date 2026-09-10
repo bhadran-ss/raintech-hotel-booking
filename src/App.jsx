@@ -6,6 +6,8 @@ import Hero from "./components/Hero";
 import RoomList from "./components/RoomList";
 import hotelData from "./data/hotelData.json";
 
+import BookingErrorSummary from "./components/BookingErrorSummary";
+
 import { calculateNights, getTodayDateString } from "./utils/dateUtils";
 
 import { calculateTotalPrice, validateBooking } from "./utils/bookingUtils";
@@ -18,6 +20,7 @@ function App() {
   const [guestCount, setGuestCount] = useState(1);
   const [selectedRoomCode, setSelectedRoomCode] = useState("");
   const [confirmedBooking, setConfirmedBooking] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const rooms = hotelData.rooms;
   const minimumCheckIn = getTodayDateString();
@@ -52,36 +55,58 @@ function App() {
     };
   }
 
-  function clearConfirmedBooking() {
-    if (confirmedBooking) {
-      setConfirmedBooking(null);
-    }
+  function clearErrors(...fieldNames) {
+    setErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors };
+
+      fieldNames.forEach((fieldName) => {
+        delete nextErrors[fieldName];
+      });
+
+      return nextErrors;
+    });
   }
 
   function handleCheckInChange(value) {
     setCheckIn(value);
-    clearConfirmedBooking();
+    setConfirmedBooking(null);
+
+    clearErrors("checkIn", "checkOut");
   }
 
   function handleCheckOutChange(value) {
     setCheckOut(value);
-    clearConfirmedBooking();
+    setConfirmedBooking(null);
+    clearErrors("checkOut");
   }
 
   function handleGuestCountChange(value) {
     setGuestCount(value);
-    clearConfirmedBooking();
+    setConfirmedBooking(null);
+    clearErrors("guestCount");
   }
 
   function handleRoomSelect(roomCode) {
     setSelectedRoomCode(roomCode);
-    clearConfirmedBooking();
-  }
+    setConfirmedBooking(null);
 
+    clearErrors("room", "guestCount");
+  }
   function handleBooking(event) {
     event.preventDefault();
 
-    if (!quote) {
+    const validationResult = validateBooking({
+      checkIn,
+      checkOut,
+      guestCount,
+      selectedRoomCode,
+      maximumGuests: selectedRoom?.maxGuests,
+    });
+
+    setErrors(validationResult.errors);
+    setConfirmedBooking(null);
+
+    if (!validationResult.isValid || !quote) {
       return;
     }
 
@@ -97,6 +122,7 @@ function App() {
       totalPrice: quote.totalPrice,
     };
 
+    setErrors({});
     setConfirmedBooking(booking);
   }
 
@@ -118,16 +144,18 @@ function App() {
 
         <div className="booking-layout">
           <div className="booking-column">
+            <BookingErrorSummary errors={errors} />
+
             <BookingForm
               checkIn={checkIn}
               checkOut={checkOut}
               guestCount={guestCount}
               minimumCheckIn={minimumCheckIn}
+              errors={errors}
               onCheckInChange={handleCheckInChange}
               onCheckOutChange={handleCheckOutChange}
               onGuestCountChange={handleGuestCountChange}
               onSubmit={handleBooking}
-              canSubmit={Boolean(quote)}
             />
 
             <BookingSummary quote={quote} confirmedBooking={confirmedBooking} />
@@ -137,6 +165,7 @@ function App() {
             rooms={rooms}
             selectedRoomCode={selectedRoomCode}
             onRoomSelect={handleRoomSelect}
+            error={errors.room}
           />
         </div>
       </main>

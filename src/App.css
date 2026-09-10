@@ -522,3 +522,52 @@
 .booking-confirmation span {
   font-size: 13px;
 }
+.error-summary {
+  padding: 16px 18px;
+  color: #842b25;
+  background: #fff0ed;
+  border: 1px solid #efc1ba;
+  border-radius: 14px;
+}
+
+.error-summary strong {
+  display: block;
+}
+
+.error-summary ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.error-summary li + li {
+  margin-top: 4px;
+}
+
+.field-error {
+  color: #a2362d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-field input[aria-invalid="true"],
+.form-field select[aria-invalid="true"] {
+  border-color: #b53e34;
+  background: #fff9f8;
+}
+
+.form-field input[aria-invalid="true"]:focus,
+.form-field select[aria-invalid="true"]:focus {
+  border-color: #b53e34;
+  outline-color: rgba(181, 62, 52, 0.15);
+}
+
+.room-list-error {
+  margin: 0 0 14px;
+  padding: 11px 13px;
+  color: #842b25;
+  background: #fff0ed;
+  border: 1px solid #efc1ba;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
